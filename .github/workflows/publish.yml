@@ -29,11 +29,11 @@ jobs:
         with:
           context: ./axe-webhooks/web
           push: true
-          tags: ghcr.io/akacurtis/axe-webhooks-web:latest
+          tags: ghcr.io/${{ github.repository_owner }}/axe-webhooks-web:latest
 
       - name: Build and push watcher
         uses: docker/build-push-action@v6
         with:
           context: ./axe-webhooks/watcher
           push: true
-          tags: ghcr.io/akacurtis/axe-webhooks-watcher:latest
+          tags: ghcr.io/${{ github.repository_owner }}/axe-webhooks-watcher:latest

@@ -10,9 +10,7 @@ services:
         condition: service_healthy
 
   web:
-    build:
-      context: ./web
-      dockerfile: Dockerfile
+    image: ghcr.io/akacurtis/axe-webhooks-web:latest
     init: true
     restart: always
     stop_grace_period: 1m
@@ -29,9 +27,7 @@ services:
       start_period: 10s
 
   watcher:
-    build:
-      context: ./watcher
-      dockerfile: Dockerfile
+    image: ghcr.io/akacurtis/axe-webhooks-watcher:latest
     init: true
     restart: always
     stop_grace_period: 1m
