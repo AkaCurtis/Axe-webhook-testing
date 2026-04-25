@@ -24,16 +24,20 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Convert repository owner to lowercase
+        id: lowercase
+        run: echo "owner=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+
       - name: Build and push web
         uses: docker/build-push-action@v6
         with:
           context: ./axe-webhooks/web
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/axe-webhooks-web:latest
+          tags: ghcr.io/${{ steps.lowercase.outputs.owner }}/axe-webhooks-web:latest
 
       - name: Build and push watcher
         uses: docker/build-push-action@v6
         with:
           context: ./axe-webhooks/watcher
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/axe-webhooks-watcher:latest
+          tags: ghcr.io/${{ steps.lowercase.outputs.owner }}/axe-webhooks-watcher:latest
