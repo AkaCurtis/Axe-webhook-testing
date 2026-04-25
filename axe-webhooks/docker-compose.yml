@@ -1,0 +1,40 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: web
+      APP_PORT: 3456
+    depends_on:
+      web:
+        condition: service_healthy
+
+  web:
+    image: ghcr.io/akacurtis/axe-webhooks-web:latest
+    init: true
+    restart: always
+    stop_grace_period: 1m
+    volumes:
+      - ${APP_DATA_DIR}:/data
+    environment:
+      ADMIN_PASSWORD: "${APP_AXE_WEBHOOKS_ADMIN_PASSWORD:-}"
+      JWT_SECRET: "${APP_AXE_WEBHOOKS_JWT_SECRET:-}"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3456/healthz', timeout=3)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  watcher:
+    image: ghcr.io/akacurtis/axe-webhooks-watcher:latest
+    init: true
+    restart: always
+    stop_grace_period: 1m
+    volumes:
+      - ${APP_DATA_DIR}:/data
+    environment:
+      POLL_SECONDS: "${APP_AXE_WEBHOOKS_POLL_SECONDS:-15}"
+      JWT_SECRET: "${APP_AXE_WEBHOOKS_JWT_SECRET:-}"
+    depends_on:
+      - web

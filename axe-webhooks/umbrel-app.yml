@@ -1,0 +1,32 @@
+manifestVersion: 1
+
+id: axe-webhooks
+name: ATH Monitor
+tagline: Worker ATH Discord alerts
+icon: https://raw.githubusercontent.com/AkaCurtis/Axe-Webhooks/main/axe-webhooks/icon.svg
+category: Development
+version: "0.8.1"
+port: 3456
+
+description: >-
+  Configure node endpoints and Discord webhook via web UI,
+  then monitor workers for new best shares.
+
+developer: Curtis
+repo: https://github.com/AkaCurtis/Axe-Webhooks
+support: https://github.com/AkaCurtis/Axe-Webhooks/issues
+gallery: []
+releaseNotes: >-
+  Fixed ECONNREFUSED errors by improving service reliability and adding healthchecks.
+dependencies: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+
+services:
+  - id: web
+    name: Settings UI
+    description: Configure endpoints + webhook
+  - id: watcher
+    name: Watcher
+    description: Background monitor
